@@ -6,7 +6,7 @@ from io import BytesIO
 
 
 st.set_page_config(page_title="Data sweeper" , layout='wide')
-st.title("Data sweeper")
+st.title("💿Data sweeper")
 st.write("Transfrom your files between CSV and Excel formats with built-in data cleaning and visualization!")
 
 uploaded_files = st.file_uploader("Upload you files (CSV or Excel):" , type=["csv","xlsx"],
@@ -30,43 +30,43 @@ if uploaded_files:
         st.write(f"**File Size:** {file.size/1024}")
 
         # Show 5 rows of our df
-        st.write("Preview the Head of the Dataframe")
+        st.write("🔍Preview the Head of the Dataframe")
         st.dataframe(df.head())
 
         # Options for data cleaning
-        st.subheader("Data Cleaning Options")
+        st.subheader("🛠 Data Cleaning Options")
         if st.checkbox(f"Clean Data for {file.name}"):
             col1,col2 =st.columns(2)
 
             with col1:
                 if st.button (f"Remove Duplicates from {file.name}"):
                     df.drop_duplicates(inplace=True)
-                    st.write("Duplicates Removed!")
+                    st.write("✅ Duplicates Removed!")
             
             with col2:
                 if st.button(f"Fill Missing Values for {file.name}"):
-                    numeric_cols = df.select_dtypes(include=['numbers']).columns
+                    numeric_cols = df.select_dtypes(include=['number']).columns
                     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-                    st.write("Missing Values have been Filled!")
+                    st.write("✅ Missing Values have been Filled!")
 
 
 
         # Choose Specific Columns to Keep or Convert 
-        st.subheader("Select Columns to Convert")
+        st.subheader("🎯 Select Columns to Convert")
         columns = st.multiselect(f"Choose Columns for {file.name}", df.columns, default=df.columns)
         df = df[columns]
 
 
 
         # Create Some Visualizations
-        st.subheader("Data Visualization")
-        if st.checkbox("Show Visualization for {file.name}"):
-           st.bar_chart(df.select_dtypes(include='number').iloc[:,:2])
+        st.subheader("📊 Data Visualization")
+        if st.checkbox(f"Show Visualization for {file.name}"):
+           st.bar_chart(df.select_dtypes(include='number').iloc[:, :2])
 
 
         # Convert the file -> CSV to Excel
 
-        st.subheader("Conversation Options")
+        st.subheader("🔄 Conversation Options")
         conversion_type =st.radio(f"Convert {file.name} to:",["CSV","Excel"], key=file.name)
         if st.button(f"Convert {file.name}"):
             buffer = BytesIO()
@@ -89,4 +89,4 @@ if uploaded_files:
                 mime= mime_type
             )
         
-st.success("All files processed!")
+st.success("🎉 All files processed!")
